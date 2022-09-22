@@ -10,15 +10,22 @@
             <ul>
                 {% for task in listTask %}
                 <li>
+                    <p class="mb-0">
+                        <small>tâche créer par</small>
+                    </p>
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12 col-lg-1 fw-bold">{{task.title}}</div>
-                                <div class="col-12 col-lg-6">{{task.content}}</div>
-                                <div class="col-12 col-lg-2">{{task.createdAt | date('d/m/Y')}}</div>
-                                <div class="col-12 col-lg-1">{{task.isDone}}</div>
-                                <div class="col-12 col-lg-1"><a href="#"><i class="far fa-edit fa-2x"></i></a></div>
-                                <div class="col-12 col-lg-1"><a href="#"><i class="far fa-trash-alt fa-2x"></i></a>
+                                <div class="col-12 col-lg-1 fw-bold mb-3">{{task.title}}</div>
+                                <div class="col-12 col-lg-5 mb-3">{{task.content}}</div>
+                                <div class="col-12 col-lg-2 mb-3"><small class="text-muted">{{task.createdAt |
+                                        date('d/m/Y')}}</small></div>
+                                <div class="col-12 col-lg-1 mb-3">{{task.isDone}}</div>
+                                <div class="col-6 col-lg-1 mb-3"><a href="#"><i
+                                            class="far fa-edit fa-lg"></i>Modifier</a>
+                                </div>
+                                <div class="col-6 col-lg-1"><a href="#"><i
+                                            class="far fa-trash-alt fa-lg"></i>Supprimer</a>
                                 </div>
                             </div>
                         </div>

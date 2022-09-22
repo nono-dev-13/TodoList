@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une tâche{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 offset-lg-2 col-lg-8">
+            {{form_start(formCreateTask)}}
+            <div class="form-floating mb-3">
+                {{ form_widget(formCreateTask.title, {
+                'attr':{'placeholder':'Titre de la tâche'},
+                }) }}
+
+                {{ form_label(formCreateTask.title, null, {
+                'label': 'Titre de la tâche',
+                'label_attr': {'class': 'col-sm-12'}
+                }) }}
+            </div>
+            <div class="form-floating mb-3">
+                {{ form_widget(formCreateTask.content, {
+                'attr':{'placeholder':'Description de la tâche'},
+                }) }}
+
+                {{ form_label(formCreateTask.content, null, {
+                'label': 'Description de la tâche',
+                'label_attr': {'class': 'col-sm-12'}
+                }) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Ajouter une tâche</button>
+            {{form_end(formCreateTask)}}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
