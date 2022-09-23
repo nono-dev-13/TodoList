@@ -7,33 +7,33 @@
 <div class="container">
     <div class="row">
         <div class="col-12 offset-lg-2 col-lg-8">
-            <h2 class="mb-5">Créer votre tâche</h2>
+            <h2 class="mb-5">Modifier votre tâche</h2>
         </div>
         <div class="col-12 offset-lg-2 col-lg-8">
-            {{form_start(formCreateTask)}}
+            {{form_start(formEditTask)}}
             <div class="form-floating mb-3">
-                {{ form_widget(formCreateTask.title, {
+                {{ form_widget(formEditTask.title, {
                 'attr':{'placeholder':'Titre de la tâche'},
                 }) }}
 
-                {{ form_label(formCreateTask.title, null, {
+                {{ form_label(formEditTask.title, null, {
                 'label': 'Titre de la tâche',
                 'label_attr': {'class': 'col-sm-12'}
                 }) }}
             </div>
             <div class="form-floating mb-3">
-                {{ form_widget(formCreateTask.content, {
+                {{ form_widget(formEditTask.content, {
                 'attr':{'placeholder':'Description de la tâche'},
                 }) }}
 
-                {{ form_label(formCreateTask.content, null, {
+                {{ form_label(formEditTask.content, null, {
                 'label': 'Description de la tâche',
                 'label_attr': {'class': 'col-sm-12'}
                 }) }}
             </div>
 
-            <button type="submit" class="btn btn-primary">Ajouter une tâche</button>
-            {{form_end(formCreateTask)}}
+            <button type="submit" class="btn btn-primary">Modifier la tâche</button>
+            {{form_end(formEditTask)}}
         </div>
     </div>
 </div>

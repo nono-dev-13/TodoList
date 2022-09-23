@@ -30,15 +30,16 @@
                 <ul class="navbar-nav">
                     {% if app.user %}
                     <li class="nav-item">
-                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="{{ path('task_create') }}">Créer une Tache</a>
                     </li>
-                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
+                    </li>
+                    {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

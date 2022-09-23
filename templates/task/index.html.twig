@@ -6,26 +6,51 @@
 
 <div class="container">
     <div class="row">
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row">
         <div class="col-12">
             <ul>
                 {% for task in listTask %}
                 <li>
-                    <p class="mb-0">
-                        <small>tâche créer par</small>
+                    <p class="mb-0 ">
+                        <small class="text-muted">
+                            tâche créer par <span class="fw-bold">
+                                {{ task.user ? task.user.username : 'anonyme' }}
+                            </span>
+                        </small>
                     </p>
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12 col-lg-1 fw-bold mb-3">{{task.title}}</div>
-                                <div class="col-12 col-lg-5 mb-3">{{task.content}}</div>
-                                <div class="col-12 col-lg-2 mb-3"><small class="text-muted">{{task.createdAt |
+                                <div class="col-12 col-lg-1 fw-bold mb-3 mb-lg-0">{{task.title}}</div>
+                                <div class="col-12 col-lg-5 mb-3 mb-lg-0">{{task.content}}</div>
+                                <div class="col-12 col-lg-2 mb-3 mb-lg-0"><small class="text-muted">{{task.createdAt |
                                         date('d/m/Y')}}</small></div>
-                                <div class="col-12 col-lg-1 mb-3">{{task.isDone}}</div>
-                                <div class="col-6 col-lg-1 mb-3"><a href="#"><i
-                                            class="far fa-edit fa-lg"></i>Modifier</a>
+                                <div class="col-12 col-lg-2 mb-3 mb-lg-0">
+                                    {% if task.isDone %}
+                                    <p class="mb-3 mb-lg-0 d-flex flex-column text-center text-success"><i
+                                            class="fas fa-check"></i><span>Fait</span></p>
+                                    {% else %}
+                                    <p class="mb-0 d-flex flex-column text-center text-danger"><i
+                                            class="fas fa-times-circle fa-lg"></i><span>Pas encore
+                                            fait</span></p>
+                                    {% endif %}
                                 </div>
-                                <div class="col-6 col-lg-1"><a href="#"><i
-                                            class="far fa-trash-alt fa-lg"></i>Supprimer</a>
+                                <div class="col-6 col-lg-1 mb-3 mb-lg-0"><a
+                                        href="{{path('task_edit', {id : task.id})}}"><i
+                                            class="far fa-edit fa-lg"></i></a>
+                                </div>
+                                <div class="col-6 col-lg-1"><a href="#"><i class="far fa-trash-alt fa-lg"></i></a>
                                 </div>
                             </div>
                         </div>
