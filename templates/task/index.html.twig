@@ -25,33 +25,33 @@
                 {% endif%}
             </h3>
         </div>
-        <div class="col-12">
+        <div class="col-12 col-lg-6">
             <ul>
                 {% for task in listTask %}
+                {% if task.isDone == false %}
                 <li>
                     <p class="mb-0 ">
                         <small class="text-muted">
-                            tâche créer par <span class="fw-bold">
+                            tâche crée par <span class="fw-bold">
                                 {{ task.user ? task.user.username : 'anonyme' }}
-                            </span>
+                            </span> le {{task.createdAt | date('d/m/Y')}}
                         </small>
                     </p>
                     <div class="card">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-lg-1 fw-bold mb-3 mb-lg-0">{{task.title}}</div>
+                            <div class="row align-items-center">
+                                <div class="col-12 col-lg-3 fw-bold mb-3 mb-lg-0">{{task.title}}</div>
                                 <div class="col-12 col-lg-5 mb-3 mb-lg-0">{{task.content}}</div>
-                                <div class="col-12 col-lg-2 mb-3 mb-lg-0"><small class="text-muted">{{task.createdAt |
-                                        date('d/m/Y')}}</small></div>
                                 <div class="col-12 col-lg-2 mb-3 mb-lg-0">
-                                    {% if task.isDone %}
-                                    <p class="mb-3 mb-lg-0 d-flex flex-column text-center text-success"><i
-                                            class="fas fa-check"></i><span>Fait</span></p>
-                                    {% else %}
-                                    <p class="mb-0 d-flex flex-column text-center text-danger"><i
-                                            class="fas fa-times-circle fa-lg"></i><span>Pas encore
-                                            fait</span></p>
-                                    {% endif %}
+                                    <a href="{{ path('task_toogle', {'id' : task.id }) }}">
+                                        {% if task.isDone %}
+                                        <p class="mb-3 mb-lg-0 d-flex flex-column text-center text-success"><i
+                                                class="fas fa-check"></i></p>
+                                        {% else %}
+                                        <p class="mb-0 d-flex flex-column text-center text-danger"><i
+                                                class="fas fa-times-circle fa-lg"></i></p>
+                                        {% endif %}
+                                    </a>
                                 </div>
                                 <div class="col-6 col-lg-1 mb-3 mb-lg-0"><a
                                         href="{{path('task_edit', {id : task.id})}}"><i
@@ -64,6 +64,50 @@
                         </div>
                     </div>
                 </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-12 col-lg-6">
+            <ul>
+                {% for task in listTask %}
+                {% if task.isDone %}
+                <li>
+                    <p class="mb-0 ">
+                        <small class="text-muted">
+                            tâche crée par <span class="fw-bold">
+                                {{ task.user ? task.user.username : 'anonyme' }}
+                            </span> le {{task.createdAt | date('d/m/Y')}}
+                        </small>
+                    </p>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-12 col-lg-3 fw-bold mb-3 mb-lg-0">{{task.title}}</div>
+                                <div class="col-12 col-lg-5 mb-3 mb-lg-0">{{task.content}}</div>
+                                <div class="col-12 col-lg-2 mb-3 mb-lg-0">
+                                    <a href="{{ path('task_toogle', {'id' : task.id }) }}">
+                                        {% if task.isDone %}
+                                        <p class="mb-3 mb-lg-0 d-flex flex-column text-center text-success"><i
+                                                class="fas fa-check"></i></p>
+                                        {% else %}
+                                        <p class="mb-0 d-flex flex-column text-center text-danger"><i
+                                                class="fas fa-times-circle fa-lg"></i></p>
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div class="col-6 col-lg-1 mb-3 mb-lg-0"><a
+                                        href="{{path('task_edit', {id : task.id})}}"><i
+                                            class="far fa-edit fa-lg"></i></a>
+                                </div>
+                                <div class="col-6 col-lg-1"><a href="{{path('task_delete', {id : task.id})}}"><i
+                                            class="far fa-trash-alt fa-lg"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endif %}
                 {% endfor %}
             </ul>
         </div>

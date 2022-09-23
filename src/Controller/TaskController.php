@@ -65,6 +65,18 @@ class TaskController extends AbstractController
         
     }
 
+
+    #[Route('/task/toogle/{id}', name: 'task_toogle')]
+    public function toggleTaskAction(Task $task, EntityManagerInterface $manager)
+    {
+        $task->toggle(!$task->isIsDone());
+        $manager->flush();
+
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+
+        return $this->redirectToRoute('home');
+    }
+
     /**
     * Affiche la page de modification d'une tâche
     */
@@ -117,9 +129,7 @@ class TaskController extends AbstractController
         
     }
 
-    /**
-    * Affiche la page de modification d'une tâche
-    */
+    
     #[Route('/task/delete/{id}', name: 'task_delete')]
     public function delete(Task $task, EntityManagerInterface $manager)
     {
