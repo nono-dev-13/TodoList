@@ -116,4 +116,28 @@ class TaskController extends AbstractController
             }
         
     }
+
+    /**
+    * Affiche la page de modification d'une tâche
+    */
+    #[Route('/task/delete/{id}', name: 'task_delete')]
+    public function delete(Task $task, EntityManagerInterface $manager)
+    {
+        //dd($task->getUser()->getId());
+        //dd($this->getUser());
+
+        /**
+         * @var User
+         */
+        
+        if ($task->getUser()->getId() == $this->getUser()->getId() || $this->getUser()->getRoles(["ROLE_ADMIN"])) {
+            $manager->remove($task);
+            $manager->flush();
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
+            return $this->redirectToRoute('home');   
+        } else {
+            $this->addFlash('error', "Vous n'êtes pas autorisé à supprimer cette tâche car vous n'êtes pas l'auteur");
+            return $this->redirectToRoute('home');
+        }
+    }
 }
