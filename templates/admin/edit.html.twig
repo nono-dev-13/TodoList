@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h2 class="mb-3">Modifier un utilisateur</h2>
+    {{form_start(formEditUser)}}
+    {{form_widget(formEditUser)}}
+    <button type="submit" class="btn btn-primary">Modifier un utilisateur</button>
+    {{form_end(formEditUser)}}
+</div>
+
+{% endblock %}

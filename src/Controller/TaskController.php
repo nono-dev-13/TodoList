@@ -87,7 +87,7 @@ class TaskController extends AbstractController
             $connectedUser = $this->getUser();
     
             if($formEditTask->isSubmitted() and $formEditTask->isValid()) {
-                if ($connectedUser->getId() == $task->getUser()->getId() || $connectedUser->getRoles(["ROLE_ADMIN"])){
+                if ($connectedUser->getId() == $task->getUser()->getId() || $connectedUser->getRoles()==["ROLE_ADMIN"]){
                     
                     if(!$task->getId()) {
                         $task->setCreatedAt(new \DateTimeImmutable());
@@ -123,21 +123,24 @@ class TaskController extends AbstractController
     #[Route('/task/delete/{id}', name: 'task_delete')]
     public function delete(Task $task, EntityManagerInterface $manager)
     {
-        //dd($task->getUser()->getId());
-        //dd($this->getUser());
 
         /**
          * @var User
          */
-        
-        if ($task->getUser()->getId() == $this->getUser()->getId() || $this->getUser()->getRoles(["ROLE_ADMIN"])) {
-            $manager->remove($task);
-            $manager->flush();
-            $this->addFlash('success', 'La tâche a bien été supprimée.');
-            return $this->redirectToRoute('home');   
+        $connectedUser = $this->getUser();
+        if ($this->getUser()){
+            if ($connectedUser->getId() == $task->getUser()->getId() || $connectedUser->getRoles()==["ROLE_ADMIN"]) {
+                $manager->remove($task);
+                $manager->flush();
+                $this->addFlash('success', 'La tâche a bien été supprimée.');
+                return $this->redirectToRoute('home');   
+            } else {
+                $this->addFlash('error', "Vous n'êtes pas autorisé à supprimer cette tâche car vous n'êtes pas l'auteur");
+                return $this->redirectToRoute('home');
+            }
         } else {
-            $this->addFlash('error', "Vous n'êtes pas autorisé à supprimer cette tâche car vous n'êtes pas l'auteur");
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('app_login');
         }
+            
     }
 }

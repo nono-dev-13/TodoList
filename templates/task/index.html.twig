@@ -19,6 +19,13 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <h3 class="mb-5">
+                {% if app.user %}
+                Bonjour {{app.user.username}}
+                {% endif%}
+            </h3>
+        </div>
+        <div class="col-12">
             <ul>
                 {% for task in listTask %}
                 <li>

@@ -15,10 +15,14 @@
                     <p class="mb-0">{{user.roles[0]}}</p>
                     <p class="mb-3">{{user.email}}</p>
                     <div class="row">
-                        <div class="col-6"><a href="">
+                        <div class="col-6"><a href="{{path('app_admin_edit', {id : user.id})}}">
                                 <i class="far fa-edit fa-lg"></i> Modifier</a>
                         </div>
-                        <div class="col-6"><a href="#"><i class="far fa-trash-alt fa-lg"></i> Supprimer</a>
+                        <div class="col-6">
+                            <a href="{{path('app_admin_delete', {id : user.id})}}">
+                                <i class="far fa-trash-alt fa-lg"></i>
+                                Supprimer
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -26,9 +30,10 @@
         </li>
         {% endfor%}
     </ul>
-    <h2 class="mb-3">Création d'un utilisateurs</h2>
+    <h2 class="mb-3">Création d'un utilisateur</h2>
     {{form_start(formAddUser)}}
     {{form_widget(formAddUser)}}
+    <button type="submit" class="btn btn-primary">Ajouter un utilisateur</button>
     {{form_end(formAddUser)}}
 </div>
 
