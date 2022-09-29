@@ -20,7 +20,7 @@ class TaskController extends AbstractController
     * Affiche la home avec la liste des taches
     */
     #[Route('/', name: 'home')]
-    public function index(TaskRepository $taskRepository, UserRepository $userRepository): Response
+    public function index(TaskRepository $taskRepository): Response
     {
         $listTask = $taskRepository->findBy(['isDone' => 0],['created_at' => 'DESC']);
         return $this->render('task/index.html.twig', [
@@ -32,7 +32,7 @@ class TaskController extends AbstractController
     * Affiche la home avec la liste des taches
     */
     #[Route('/task-done', name: 'task_done')]
-    public function taskDone(TaskRepository $taskRepository, UserRepository $userRepository): Response
+    public function taskDone(TaskRepository $taskRepository): Response
     {
         $listTask = $taskRepository->findBy(['isDone' => 1],['created_at' => 'DESC']);
         return $this->render('task/task-done.html.twig', [
@@ -82,11 +82,9 @@ class TaskController extends AbstractController
     #[Route('/task/toogle/{id}', name: 'task_toogle')]
     public function toggleTaskAction(Task $task, EntityManagerInterface $manager)
     {
+
         if ($this->getUser()) {
-            //dump($this->getUser()->getRoles()==["ROLE_ADMIN"]);
-            //dump($this->getUser()->getRoles());
-            //die();
-            if ($this->getUser()->getId() == $task->getUser()->getId() || $this->getUser()->getRoles()==["ROLE_ADMIN"]){
+            if ($this->getUser()->getId() == $task->getUser()->getId() || $this->isGranted('ROLE_ADMIN')){
                 $task->toggle(!$task->isIsDone());
                 $manager->flush();
         
@@ -125,7 +123,7 @@ class TaskController extends AbstractController
             */
             
             if($formEditTask->isSubmitted() and $formEditTask->isValid()) {
-                if ($this->getUser()->getId() == $task->getUser()->getId() || $this->getUser()->getRoles()==["ROLE_ADMIN"]){
+                if ($this->getUser()->getId() == $task->getUser()->getId() || $this->isGranted('ROLE_ADMIN')){
                     
                     if(!$task->getId()) {
                         $task->setCreatedAt(new \DateTimeImmutable());
@@ -164,7 +162,7 @@ class TaskController extends AbstractController
          * @var User
          */
         if ($this->getUser()){
-            if ($this->getUser()->getId() == $task->getUser()->getId() || $this->getUser()->getRoles()==["ROLE_ADMIN"]) {
+            if ($this->getUser()->getId() == $task->getUser()->getId() || $this->isGranted('ROLE_ADMIN')) {
                 $manager->remove($task);
                 $manager->flush();
                 $this->addFlash('success', 'La tâche a bien été supprimée.');

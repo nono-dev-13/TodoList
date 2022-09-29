@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ChangePasswordType;
+use App\Form\EditUserType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,16 +50,10 @@ class AdminController extends AbstractController
     public function edit(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $manager, User $user): Response
     {
         
-        $formEditUser = $this->createForm(UserType::class, $user);
+        $formEditUser = $this->createForm(EditUserType::class, $user);
         $formEditUser->handleRequest($request);
 
         if($formEditUser->isSubmitted() and $formEditUser->isValid()) {
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                        $user,
-                        $formEditUser->get('password')->getData()
-                    )
-            );
 
             $manager->persist($user);
             $manager->flush();
