@@ -8,7 +8,11 @@
     <h2 class="mb-3">Modifier un utilisateur</h2>
     {{form_start(formEditUser)}}
     {{form_widget(formEditUser)}}
-    <button type="submit" class="btn btn-primary">Modifier un utilisateur</button>
+    <div class="d-flex justify-content-between align-items-center">
+        <button type="submit" class="btn btn-primary">Modifier un utilisateur</button>
+        <a href="{{ path('app_admin_change_pass', {id : user.id}) }}">Changer mon mot de passe</a>
+    </div>
+
     {{form_end(formEditUser)}}
 </div>
 

@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg mb-3" style="background-color: #e3f2fd;">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <p class="mb-0">To Do List app</p>
+            <img src="{{ asset('img/Logo_OpenClassrooms.png') }}" style="max-width:12rem;" alt="OpenClassrooms" />
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+            aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbar">
+            <ul class="navbar-nav">
+                {% if app.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('task_create') }}">Créer une Tache</a>
+                </li>
+                {% if app.user and (is_granted("ROLE_ADMIN")) %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_admin') }}">Gestion utilisateur</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

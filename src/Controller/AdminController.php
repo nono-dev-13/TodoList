@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ChangePasswordType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -66,7 +67,36 @@ class AdminController extends AbstractController
         }
         
         return $this->render('admin/edit.html.twig', [
+            'user'=> $user,
             'formEditUser' => $formEditUser->createView(),
+        ]);
+        
+    }
+
+    #[Route('/admin/change-pass/{id}', name: 'app_admin_change_pass')]
+    public function changePass(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $manager, User $user): Response
+    {
+        
+        $formChangePassUser = $this->createForm(ChangePasswordType::class, $user);
+        $formChangePassUser->handleRequest($request);
+
+        if($formChangePassUser->isSubmitted() and $formChangePassUser->isValid()) {
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                        $user,
+                        $formChangePassUser->get('password')->getData()
+                    )
+            );
+
+            $manager->persist($user);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_admin');
+        }
+        
+        return $this->render('admin/change-pass.html.twig', [
+            'user' => $user,
+            'formChangePassUser' => $formChangePassUser->createView(),
         ]);
         
     }

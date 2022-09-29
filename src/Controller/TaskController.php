@@ -15,14 +15,27 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TaskController extends AbstractController
 {
+    
     /**
     * Affiche la home avec la liste des taches
     */
     #[Route('/', name: 'home')]
     public function index(TaskRepository $taskRepository, UserRepository $userRepository): Response
     {
-        $listTask = $taskRepository->findAll();
+        $listTask = $taskRepository->findBy(['isDone' => 0],['created_at' => 'DESC']);
         return $this->render('task/index.html.twig', [
+            'listTask' => $listTask,
+        ]);
+    }
+
+    /**
+    * Affiche la home avec la liste des taches
+    */
+    #[Route('/task-done', name: 'task_done')]
+    public function taskDone(TaskRepository $taskRepository, UserRepository $userRepository): Response
+    {
+        $listTask = $taskRepository->findBy(['isDone' => 1],['created_at' => 'DESC']);
+        return $this->render('task/task-done.html.twig', [
             'listTask' => $listTask,
         ]);
     }
@@ -69,12 +82,26 @@ class TaskController extends AbstractController
     #[Route('/task/toogle/{id}', name: 'task_toogle')]
     public function toggleTaskAction(Task $task, EntityManagerInterface $manager)
     {
-        $task->toggle(!$task->isIsDone());
-        $manager->flush();
-
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
-
-        return $this->redirectToRoute('home');
+        if ($this->getUser()) {
+            //dump($this->getUser()->getRoles()==["ROLE_ADMIN"]);
+            //dump($this->getUser()->getRoles());
+            //die();
+            if ($this->getUser()->getId() == $task->getUser()->getId() || $this->getUser()->getRoles()==["ROLE_ADMIN"]){
+                $task->toggle(!$task->isIsDone());
+                $manager->flush();
+        
+                $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        
+                return $this->redirectToRoute('home');
+            } else {
+                $this->addFlash('error', "Vous ne pouvez pas marquer cet tâche, vous n'êtes pas l'auteur");
+                return $this->redirectToRoute('home');
+            }
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
+        
+        
     }
 
     /**
@@ -96,10 +123,9 @@ class TaskController extends AbstractController
             * récupère l'utilisateur connecté (via symfony) 
             * @var User
             */
-            $connectedUser = $this->getUser();
-    
+            
             if($formEditTask->isSubmitted() and $formEditTask->isValid()) {
-                if ($connectedUser->getId() == $task->getUser()->getId() || $connectedUser->getRoles()==["ROLE_ADMIN"]){
+                if ($this->getUser()->getId() == $task->getUser()->getId() || $this->getUser()->getRoles()==["ROLE_ADMIN"]){
                     
                     if(!$task->getId()) {
                         $task->setCreatedAt(new \DateTimeImmutable());
@@ -137,9 +163,8 @@ class TaskController extends AbstractController
         /**
          * @var User
          */
-        $connectedUser = $this->getUser();
         if ($this->getUser()){
-            if ($connectedUser->getId() == $task->getUser()->getId() || $connectedUser->getRoles()==["ROLE_ADMIN"]) {
+            if ($this->getUser()->getId() == $task->getUser()->getId() || $this->getUser()->getRoles()==["ROLE_ADMIN"]) {
                 $manager->remove($task);
                 $manager->flush();
                 $this->addFlash('success', 'La tâche a bien été supprimée.');
