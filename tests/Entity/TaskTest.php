@@ -3,36 +3,78 @@ namespace App\Tests\Entity;
 
 use App\Entity\Task;
 use App\Entity\User;
-use DateTime;
-use DateTimeImmutable;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Validator\ConstraintViolation;
 
 use function PHPUnit\Framework\assertEquals;
 
-class TaskTest extends TestCase {
+class TaskTest extends KernelTestCase {
 
-    /**
-     * Get Author
-     */
-    public function getUser(): User {
-        return new User();
+    public function createUser () {
+        $user = new User();
+        $user->setEmail('user@user.fr')
+        ->setUsername('Arnaud');
+
+        return $user;
     }
 
-    /**
-     * Get Task
-     */
-    public function testGetTask() 
-    {
+    public function testValidEntityTask () {
         $task = new Task();
-        $task->setTitle('t');
-        $task->setContent('TO DO');
-        $task->setCreatedAt(new DateTimeImmutable());
-        $task->setUser($this->getUser());
-        //$validator = $this->
-        //$errors = $validator->validate($task);
-        //$this->assertEquals($errors->count(), 0);
-        $this->assertEquals(1,1);
-        return $task;
+        $date = new \DateTimeImmutable();
+        $user = $this->createUser();
+        $task->setTitle('Un titre')
+            ->setContent('Un contenu')
+            ->setCreatedAt($date)
+            ->setIsDone(true)
+            ->setUser($user);
+
+        self::bootKernel();
+        $container = static::getContainer();
+        $error = $container->get('validator')->validate($task);
+        $this->assertCount(0, $error);
+
+        $this->assertEquals($task->getTitle(), 'Un titre');
+        $this->assertEquals($task->getContent(), 'Un contenu');
+        $this->assertEquals($task->getCreatedAt(), $date);
+        $this->assertEquals($task->isIsDone(), true);
+        $this->assertEquals($task->getUser(),$user);
+    
+    }
+
+    public function testToogle() {
+        $task = new Task();
+        $date = new \DateTimeImmutable();
+        $user = $this->createUser();
+        $task->setTitle('Un titre')
+            ->setContent('Un contenu')
+            ->setCreatedAt($date)
+            ->setIsDone(true)
+            ->setUser($user);
+        $task->toggle(false);
+        $this->assertEquals($task->isIsDone(), false);
+    }
+    
+    public function testInvalidMinEntity () {
+        $task = new Task();
+        $task->setTitle('u')
+            ->setContent('')
+            ->setCreatedAt(new \DateTimeImmutable());
+
+        self::bootKernel();
+        $container = static::getContainer();
+        $error = $container->get('validator')->validate($task);
+        $this->assertCount(2, $error);
+    }
+    
+    public function testInvalidMaxEntity () {
+        $task = new Task();
+        $task->setTitle('zaeaeazeaze aze azeaz eaz eaz ea ze aze azeazeaze azeaze azeaze aze aze az eazeazeazeaze azeaz eazeazeazeaze azeaze azeazeazeazeazeaze azeazeazeazeazezaeazeazeazeazezaze za eza eaze aze aze az eaz e z eaz e azeazeazeeazeazeazezaeazeaze za eaz eaz e za eaz e az e az ea ze az e az e aze a zeaze az e az e az ea ze az e az e az e az e az eaze')
+            ->setContent('')
+            ->setCreatedAt(new \DateTimeImmutable());
+
+        self::bootKernel();
+        $container = static::getContainer();
+        $error = $container->get('validator')->validate($task);
+        $this->assertCount(2, $error);
     }
 }
