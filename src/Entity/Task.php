@@ -18,17 +18,20 @@ class Task
     #[ORM\Column(length: 255)]
     #[Assert\Length(
         min: 2,
-        max: 50,
-        minMessage: 'Your title must be at least {{ limit }} characters long',
-        maxMessage: 'Your title cannot be longer than {{ limit }} characters',
+        max: 255,
+        minMessage: 'Votre titre doit comporter au moins {{ limit }} caractères',
+        maxMessage: 'Votre titre ne doit pas être plus long que  {{ limit }} caractères',
     )]
     private string $title;
 
+    #[Assert\NotBlank(message: 'Vous devez saisir du contenu')]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
+    
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
+
 
     #[ORM\Column]
     private ?bool $isDone = null;
