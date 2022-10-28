@@ -1,0 +1,21 @@
+PHPUnit 9.5.25 [44;37m#StandWith[0m[43;30mUkraine[0m
+
+Testing 
+.......                                                             7 / 7 (100%)
+
+Time: 00:01.907, Memory: 46.00 MB
+
+OK (7 tests, 19 assertions)
+
+Generating code coverage report in HTML format ... done [00:00.203]
+
+Remaining self deprecation notices (1)
+
+  1x: Method "Doctrine\Persistence\ObjectRepository::findAll()" might add "array" as a native return type declaration in the future. Do the same in implementation "App\Repository\TaskRepository" now to avoid errors or add an explicit @return annotation to suppress this message.
+    1x in PageControllerTest::testIndexPage from App\Tests\Controller
+
+Remaining indirect deprecation notices (1)
+
+  1x: The "Monolog\Logger" class is considered final. It may change without further notice as of its next major version. You should not extend it from "Symfony\Bridge\Monolog\Logger".
+    1x in PageControllerTest::testIndexPage from App\Tests\Controller
+

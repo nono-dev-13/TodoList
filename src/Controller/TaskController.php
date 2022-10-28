@@ -99,7 +99,6 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         
-        
     }
 
     /**
