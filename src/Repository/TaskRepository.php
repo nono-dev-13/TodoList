@@ -21,6 +21,7 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
+    /*
     public function add(Task $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -38,11 +39,14 @@ class TaskRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    
 
     public function findAll()
     {
         return $this->findBy([],['created_at' => 'DESC']);
     }
+
+    */
 
 //    /**
 //     * @return Task[] Returns an array of Task objects

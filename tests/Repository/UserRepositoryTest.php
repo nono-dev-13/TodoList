@@ -31,9 +31,9 @@ class UserRepositoryTest extends KernelTestCase
     {
         $user = $this->entityManager
             ->getRepository(User::class)
-            ->findOneBy(['username' => 'Thomas'])
+            ->findOneBy(['username' => 'Arnaud'])
         ;
 
-        $this->assertSame('Thomas', $user->getUsername());
+        $this->assertSame('Arnaud', $user->getUsername());
     }
 }

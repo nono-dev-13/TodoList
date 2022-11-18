@@ -109,10 +109,6 @@ class TaskController extends AbstractController
     {
         if ($this->getUser()) {
             
-            if(!$task){
-                $task = new Task();
-            }
-            
             $formEditTask = $this->createForm(TaskType::class, $task);
             $formEditTask->handleRequest($request);
 
@@ -123,10 +119,6 @@ class TaskController extends AbstractController
             
             if($formEditTask->isSubmitted() and $formEditTask->isValid()) {
                 if ($this->getUser()->getId() == $task->getUser()->getId() || $this->isGranted('ROLE_ADMIN')){
-                    
-                    if(!$task->getId()) {
-                        $task->setCreatedAt(new \DateTimeImmutable());
-                    }
         
                     $manager->persist($task);
                     $manager->flush();
