@@ -62,11 +62,18 @@
                                     </a>
                                     {% endif %}
                                 </div>
-                                <div class="col-6 col-lg-1 mb-lg-0"><a href="{{path('task_edit', {id : task.id})}}"><i
-                                            class="far fa-edit fa-lg"></i></a>
+                                <div class="col-6 col-lg-1 mb-lg-0">
+                                    {% if app.user %}
+                                    <a href="{{path('task_edit', {id : task.id})}}"><i class="far fa-edit fa-lg"></i>
+                                    </a>
+                                    {% endif %}
                                 </div>
-                                <div class="col-6 col-lg-1"><a href="{{path('task_delete', {id : task.id})}}"><i
-                                            class="far fa-trash-alt fa-lg"></i></a>
+                                <div class="col-6 col-lg-1">
+                                    {% if app.user %}
+                                    <a href="{{path('task_delete', {id : task.id})}}"><i
+                                            class="far fa-trash-alt fa-lg"></i>
+                                    </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
