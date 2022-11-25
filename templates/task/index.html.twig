@@ -50,6 +50,7 @@
                                 <div class="col-12 col-lg-3 fw-bold mb-3 mb-lg-0">{{task.title}}</div>
                                 <div class="col-12 col-lg-5 mb-3 mb-lg-0">{{task.content}}</div>
                                 <div class="col-12 col-lg-2 mb-3 mb-lg-0">
+                                    {% if app.user %}
                                     <a href="{{ path('task_toogle', {'id' : task.id }) }}">
                                         {% if task.isDone %}
                                         <p class="mb-3 mb-lg-0 d-flex flex-column text-center text-success"><i
@@ -59,6 +60,7 @@
                                                 class="fas fa-times-circle fa-lg"></i></p>
                                         {% endif %}
                                     </a>
+                                    {% endif %}
                                 </div>
                                 <div class="col-6 col-lg-1 mb-lg-0"><a href="{{path('task_edit', {id : task.id})}}"><i
                                             class="far fa-edit fa-lg"></i></a>
