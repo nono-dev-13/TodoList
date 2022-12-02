@@ -153,7 +153,8 @@ class TaskController extends AbstractController
          * @var User
          */
         if ($this->getUser()){
-            if ($this->getUser()->getId() == $task->getUser()->getId()) {
+            $idTaskUser = $task->getUser() ? $task->getUser()->getId() : null;
+            if ($this->getUser()->getId() == $idTaskUser || ($this->isGranted('ROLE_ADMIN') && $idTaskUser == null) ) {
                 $manager->remove($task);
                 $manager->flush();
                 $this->addFlash('success', 'La tâche a bien été supprimée.');
