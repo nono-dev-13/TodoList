@@ -136,6 +136,23 @@ class PageControllerTest extends WebTestCase
         
         $this->assertResponseRedirects('/');
         $this->client->followRedirect();
+        $this-> assertSelectorExists('.alert.alert-danger');
+
+    }
+
+    public function testDeleteTaskAdminRoleAnonyme()
+    {
+        $this->databaseTool->loadFixtures([AppTestFixtures::class]);
+        //log user ou admin
+        // je me log
+        $this->client->loginUser($this->getUserAdmin());
+        $taskRepository = static::getContainer()->get(TaskRepository::class);
+        $id = $taskRepository->findOneBy(['user' => null])->getId();
+        
+        $this->client->request('GET', '/task/delete/'.$id);
+        
+        $this->assertResponseRedirects('/');
+        $this->client->followRedirect();
         $this-> assertSelectorExists('.alert.alert-success');
 
     }

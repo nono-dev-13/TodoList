@@ -60,6 +60,14 @@ class AppTestFixtures extends Fixture
             $manager->persist($task);
         }
 
+        $taskNull = new Task;
+        $taskNull->setTitle('titre anonyme Null ');
+        $taskNull->setCreatedAt(new DateTimeImmutable('now'));
+        $taskNull->setContent('contenu anonyme Null');
+        $taskNull->setUser(null);
+        
+        $manager->persist($taskNull);
+
         $manager->flush();
     }
 }
